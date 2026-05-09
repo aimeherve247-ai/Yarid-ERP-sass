@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <meta name="theme-color" content="#0ea5e9" />
+    <meta name="background-color" content="#f8fafc" />
+    <meta name="description" content="Yarid Pro - Plateforme ERP multi-entreprises pour la gestion intelligente de stocks, fournisseurs et analytics en temps reel." />
+    <meta name="author" content="YARID Group" />
+    <meta name="keywords" content="ERP, gestion de stock, supply chain, QR code, magasinier, multi-tenant" />
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" sizes="72x72" href="/icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="96x96" href="/icon-96x96.png" />
+    <link rel="apple-touch-icon" sizes="128x128" href="/icon-128x128.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="/icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="/icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="/icon-192x192.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="/icon-512x512.png" />
+
+    <!-- Apple PWA -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="YaridPro" />
+
+    <!-- Microsoft Tiles -->
+    <meta name="msapplication-TileColor" content="#0ea5e9" />
+    <meta name="msapplication-TileImage" content="/icon-144x144.png" />
+    <meta name="msapplication-config" content="/browserconfig.xml" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/icon-96x96.png" />
+    <link rel="shortcut icon" href="/icon-96x96.png" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,700&display=swap" rel="stylesheet" />
+
+    <title>Yarid Pro | ERP Multi-Entreprises</title>
+
+    <style>
+      /* Inline critical CSS for instant loading screen */
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { background: #f8fafc; font-family: 'Plus Jakarta Sans', sans-serif; }
+      #root:empty + #loading-screen {
+        display: flex;
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: #f8fafc;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 24px;
+      }
+      #loading-screen {
+        display: none;
+      }
+      .loading-spinner {
+        width: 48px;
+        height: 48px;
+        border: 4px solid #e2e8f0;
+        border-top-color: #0ea5e9;
+        border-radius: 50%;
+        animation: loadspin 1s linear infinite;
+      }
+      .loading-logo {
+        font-size: 28px;
+        font-weight: 800;
+        font-style: italic;
+        color: #0f172a;
+        letter-spacing: -1px;
+      }
+      .loading-logo span { color: #0ea5e9; }
+      @keyframes loadspin { to { transform: rotate(360deg); } }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <!-- Loading screen (shown while React loads) -->
+    <div id="loading-screen">
+      <div class="loading-spinner"></div>
+      <div class="loading-logo">YARID<span>PRO</span></div>
+    </div>
+
+    <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/sw.js')
+            .then(function(registration) {
+              console.log('[YARID PRO] Service Worker registered:', registration.scope);
+            })
+            .catch(function(error) {
+              console.log('[YARID PRO] Service Worker registration failed:', error);
+            });
+        });
+      }
+
+      // Remove loading screen when React mounts
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          var ls = document.getElementById('loading-screen');
+          if (ls) ls.style.display = 'none';
+        }, 500);
+      });
+    </script>
+  </body>
+</html>
